@@ -1,0 +1,16 @@
+{
+  "name": "interpub",
+  "version": "0.1.0",
+  "description": "Safe plugin publishing — bumps all version locations, validates sync, commits and pushes with confirmation.",
+  "author": {
+    "name": "MK",
+    "email": "mistakeknot@vibeguider.org"
+  },
+  "repository": "https://github.com/mistakeknot/interpub",
+  "homepage": "https://github.com/mistakeknot/interpub#readme",
+  "license": "MIT",
+  "keywords": ["publishing", "versioning", "marketplace", "plugin-dev", "release"],
+  "commands": [
+    "./.claude-plugin/commands/release.md"
+  ]
+}
