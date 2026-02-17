@@ -1,0 +1,15 @@
+{
+  "module_summary": "Interpub provides safe version bumping, publishing, and release workflows for plugins and companion modules.",
+  "roadmap": {
+    "now": [
+      {"id": "IPUB-N1", "title": "Reduce publish risk with pre-flight dependency graph checks.", "priority": "P1"}
+    ],
+    "next": [
+      {"id": "IPUB-N2", "title": "Add rollback and dry-run visibility for multi-repo release dependencies.", "priority": "P2"},
+      {"id": "IPUB-N3", "title": "Expose publish telemetry and gating evidence to Clavain quality dashboards.", "priority": "P2"},
+      {"id": "IPUB-L1", "title": "Automate release candidate validation for plugin bundles.", "priority": "P2"}
+    ],
+    "later": [
+    ]
+  }
+}
