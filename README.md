@@ -1,16 +1,17 @@
 # interpub
 
-Safe plugin publishing for Claude Code. Bumps all version locations, validates sync, commits and pushes with confirmation.
+Safe plugin publishing for Claude Code.
 
-## The Problem
+## What This Does
 
-Plugins distributed through marketplace repositories have version strings in multiple files (`plugin.json`, `marketplace.json`, `pyproject.toml`, etc.) that must stay in sync. When they drift, the plugin appears installed but commands, skills, and hooks silently don't load. See [version drift failure mode](https://github.com/mistakeknot/tldr-swinton/blob/main/docs/solutions/build-errors/plugin-version-drift-breaks-loading.md).
+Plugins distributed through marketplace repositories have version strings in multiple files — `plugin.json`, `marketplace.json`, `pyproject.toml`, sometimes more. When they drift, the plugin appears installed but commands, skills, and hooks silently don't load. It's the kind of bug where everything looks fine until nothing works, and you spend 20 minutes wondering why your new skill isn't triggering before you realize `marketplace.json` still says `0.1.3`.
 
-## Install
+interpub bumps all version locations atomically, validates they're in sync, commits each repo, and asks before every push. The automation exists because manually keeping three version strings in sync across two repos is exactly the kind of thing humans mess up.
+
+## Installation
 
 ```bash
-claude plugin marketplace add mistakeknot/interagency-marketplace
-claude plugin install interpub@interagency-marketplace
+/plugin install interpub
 ```
 
 ## Usage
@@ -21,10 +22,10 @@ From inside any plugin repository:
 /interpub:release 1.2.0
 ```
 
-This guides you through:
+This walks through four phases:
 
 1. **Discover** — finds all version locations (plugin.json, marketplace.json, pyproject.toml, package.json, Cargo.toml)
-2. **Validate** — checks versions are in sync, optionally runs plugin-validator
+2. **Validate** — checks versions are in sync, optionally runs the plugin-validator agent
 3. **Update** — bumps all versions, commits each repo (asks before every push)
 4. **Verify** — confirms pushes succeeded, reminds about session restarts
 
