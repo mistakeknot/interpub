@@ -17,6 +17,7 @@
     "release"
   ],
   "commands": [
-    "./.claude-plugin/commands/release.md"
+    "./.claude-plugin/commands/release.md",
+    "./.claude-plugin/commands/sweep.md"
   ]
 }
