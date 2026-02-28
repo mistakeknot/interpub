@@ -1,6 +1,6 @@
 {
   "name": "interpub",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Safe plugin publishing — bumps all version locations, validates sync, commits and pushes with confirmation.",
   "author": {
     "name": "MK",
