@@ -44,8 +44,8 @@ print(match[0]['version'] if match else 'none')
     # Unpushed commits
     ahead=$(git log origin/main..HEAD --oneline 2>/dev/null | wc -l)
 
-    # Uncommitted changes (excluding noise dirs)
-    dirty=$(git status --porcelain 2>/dev/null | grep -v '^\?\? \.clavain/' | grep -v '^\?\? \.tldrs/' | grep -v '^\?\? \.gemini/' | grep -v '^\?\? docs/$' | wc -l)
+    # Uncommitted changes (excluding untracked noise)
+    dirty=$(git status --porcelain 2>/dev/null | grep -v '^?? \.clavain' | grep -v '^?? \.tldrs' | grep -v '^?? \.gemini' | grep -v '^?? docs/$' | grep -v '^?? \.claude/' | wc -l)
 
     is_stale=false
     reasons=""
