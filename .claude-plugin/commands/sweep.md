@@ -15,12 +15,18 @@ Scan every plugin repo, compare versions across local/marketplace/cache, and pub
 Run this scan to find plugins where the local repo has unpushed commits or version drift:
 
 ```bash
-DEMARCH_ROOT="/home/mk/projects/Demarch"
-MARKETPLACE="$DEMARCH_ROOT/core/marketplace/.claude-plugin/marketplace.json"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || { echo "error: not in a git repo" >&2; exit 1; }
+MARKETPLACE="$PROJECT_ROOT/core/marketplace/.claude-plugin/marketplace.json"
 CACHE_ROOT="$HOME/.claude/plugins/cache/interagency-marketplace"
 
+# Auto-detect plugin parent directories (any subdir containing .claude-plugin/)
+plugin_dirs=()
+while IFS= read -r -d '' pdir; do
+    plugin_dirs+=("$(dirname "$pdir")")
+done < <(find "$PROJECT_ROOT" -maxdepth 3 -name '.claude-plugin' -type d -print0 2>/dev/null)
+
 stale=()
-for dir in "$DEMARCH_ROOT"/interverse/*/ "$DEMARCH_ROOT"/os/clavain/; do
+for dir in "${plugin_dirs[@]}"; do
     [ -d "$dir/.claude-plugin" ] || continue
     name=$(basename "$dir")
     cd "$dir"
