@@ -43,9 +43,12 @@ match = [p for p in plugins if p['name'] == '$name']
 print(match[0]['version'] if match else 'none')
 " 2>/dev/null) || market_ver="none"
 
-    # Cache version (directory name)
-    cache_ver_dir=$(ls -d "$CACHE_ROOT/$name"/*/ 2>/dev/null | head -1)
-    cache_ver=$(basename "$cache_ver_dir" 2>/dev/null) || cache_ver="none"
+    # Cache version: highest REAL version dir. `ls | head -1` is wrong twice —
+    # lexical order ranks 0.3.11 above 0.4.0, and hook-bridge symlinks
+    # (old-version -> new-version) list before the real dir. -type d skips
+    # symlinks; sort -V orders semver correctly.
+    cache_ver=$(find "$CACHE_ROOT/$name" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | sed 's|.*/||' | sort -V | tail -1)
+    [ -n "$cache_ver" ] || cache_ver="none"
 
     # Unpushed commits
     ahead=$(git log origin/main..HEAD --oneline 2>/dev/null | wc -l)
@@ -119,9 +122,12 @@ for name in <published_plugins>; do
     cache_dir="$CACHE_ROOT/$name/$local_ver"
     mkdir -p "$cache_dir"
     rsync -a --delete --exclude='.git' --exclude='.clavain' --exclude='.tldrs' --exclude='node_modules' --exclude='__pycache__' --exclude='.venv' "$plugin_dir/" "$cache_dir/"
-    # Remove old version dirs
-    for old in "$CACHE_ROOT/$name"/*/; do
-        [ "$(basename "$old")" != "$local_ver" ] && rm -rf "$old"
+    # Remove old version entries. No trailing slash on the glob: `rm -rf link/`
+    # traverses a hook-bridge symlink and deletes the TARGET's contents — which
+    # can be the version we just synced. Remove symlinks as links, dirs as dirs.
+    for old in "$CACHE_ROOT/$name"/*; do
+        [ "$(basename "$old")" = "$local_ver" ] && continue
+        if [ -L "$old" ]; then rm -f "$old"; elif [ -d "$old" ]; then rm -rf "$old"; fi
     done
 done
 ```
