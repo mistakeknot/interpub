@@ -1,6 +1,6 @@
 # interpub
 
-Safe plugin publishing for Claude Code.
+Safe plugin publishing for Claude Code, Codex, and Kimi Code.
 
 ## What this does
 
