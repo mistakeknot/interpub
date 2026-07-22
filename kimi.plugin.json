@@ -1,0 +1,19 @@
+{
+  "name": "interpub",
+  "version": "0.1.9",
+  "description": "Safe plugin publishing — bumps all version locations, validates sync, commits and pushes with confirmation.",
+  "license": "MIT",
+  "keywords": [
+    "publishing",
+    "versioning",
+    "marketplace",
+    "plugin-dev",
+    "release"
+  ],
+  "homepage": "https://github.com/mistakeknot/interpub#readme",
+  "author": "MK",
+  "interface": {
+    "displayName": "interpub",
+    "shortDescription": "Safe plugin publishing — bumps all version locations, validates sync, commits and pushes with confirmation."
+  }
+}
